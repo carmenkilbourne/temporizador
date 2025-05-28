@@ -1,4 +1,4 @@
-class Block
+class Nodo
   attr_reader :id, :timer
 
   def initialize(id, timer)
@@ -27,10 +27,10 @@ class Block
   def self.first(timer)
     random_hash = Digest::SHA256.hexdigest(rand.to_s)
     difficulty = random_hash[0, 2]
-    Block.new(0, timer)
+    Nodo.new(0, timer)
   end
 
   def self.next(previous, timer)
-    Block.new(previous.id + 1, timer)
+    Nodo.new(previous.id + 1, timer)
   end
-end  # class Block
+end  # class Nodo
