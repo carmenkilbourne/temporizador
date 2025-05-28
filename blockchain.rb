@@ -9,23 +9,25 @@ LEDGER = []						#registro
 
 def create_nodes_and_sync_time(node_count)
   timers = get_timers_from_server(node_count)
-  puts "Timers recibidos: #{timers.inspect}"
-  avg = average_timer(timers)
-  puts "La hora correcta (media): #{avg}"
+  avg_in_float, avg_hora = average_timer(timers)
+  puts "La hora media: #{avg_hora}"
 
-  # Crear los nodos con su id y timer individual
   nodes = []
   node_count.times do |i|
     node = Block.new(i + 1, timers[i])
     nodes << node
-    puts "Nodo #{node.id} creado con timer #{node.timer}"
+    puts "Nodo #{node.id} creado con timer #{Time.at(node.timer).strftime("%H:%M:%S")}"
   end
 
-  # Devolver la hora sincronizada a cada nodo (simulado)
+  coordinator = nodes.sample
+  puts "\nEl Nodo #{coordinator.id} actúa como coordinador"
+
   nodes.each do |node|
-    puts "Nodo #{node.id} ajusta su timer a la hora sincronizada: #{avg}"
-    node.instance_variable_set(:@timer, avg)
+    diff = avg_in_float - node.timer
+    puts "Nodo #{node.id} ajustará su timer en #{diff.round(3)} segundos"
+    node.instance_variable_set(:@timer, node.timer + diff)
   end
+end
 end
 	
 	
