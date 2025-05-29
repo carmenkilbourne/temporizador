@@ -4,12 +4,12 @@ require_relative 'Nodo'					# class Nodo
 require_relative 'funciones'		# method funcioness
 
 LEDGER = []						#registro
-def crear_nodos(node_count)
-  timers = get_timers(node_count)
+def crear_nodos(n_nodos)
+  timers = get_timers(n_nodos)
 	 avg=sincronizar_berkeley(timers)
-	   puts "La hora correcta según el método de Berkley: #{avg}"
+	   puts "La hora correcta según el método de Berkley: #{Time.at(avg).strftime("%H:%M:%S %d/%m")}"
  nodes = []
-  node_count.times do |i|
+  n_nodos.times do |i|
     node = Nodo.new(i + 1, timers[i])
     nodes << node
   end
@@ -17,7 +17,6 @@ def crear_nodos(node_count)
   nodes.each do |node|
     puts "Nodo #{node.id} ajusta su timer : #{Time.at(avg).strftime("%H:%M:%S %d/%m")}"
     node.instance_variable_set(:@timer, avg)
-
   end
 end
 	
